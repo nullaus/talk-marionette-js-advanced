@@ -212,7 +212,7 @@ for(var i = 0; i < runsToPerform; i++) {
                             ['test-integration'],
                             { maxBuffer: 4096 * 1024,
                               env: env });
-  if (status.status !== 0) {
+  if (childProc.status !== 0) {
     console.info(childProc.stdout);
     console.error(childProc.stderr);
     process.exit(99);
