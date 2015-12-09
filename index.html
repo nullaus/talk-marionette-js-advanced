@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
 
-    <title>reveal.js – The HTML Presentation Framework</title>
+    <title>Marionette JS Advanced Internals, Tips & Tricks</title>
 
-    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-    <meta name="author" content="Hakim El Hattab">
+    <meta name="description" content="An overview of the Marionette JS internals, Tips & Tricks for advanced users.">
+    <meta name="author" content="Ghislain 'Aus' Lacroix">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -37,346 +37,192 @@
   <body>
 
     <div class="reveal">
-
-      <!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
-        <section>
-          <h1>Reveal.js</h1>
-          <h3>The HTML Presentation Framework</h3>
-          <p>
-            <small>Created by <a href="http://hakim.se">Hakim El Hattab</a> / <a href="http://twitter.com/hakimel">@hakimel</a></small>
-          </p>
-        </section>
 
+        <!-- Intro -->
         <section>
-          <h2>Hello There</h2>
+          <h1>Marionette JS</h1>
+          <h3>Advanced Usage, Tips & Tricks</h3>
           <p>
-            reveal.js enables you to create beautiful interactive slide decks using HTML. This presentation will show you examples of what it can do.
-          </p>
-        </section>
-
-        <!-- Example of nested vertical slides -->
-        <section>
-          <section>
-            <h2>Vertical Slides</h2>
-            <p>Slides can be nested inside of each other.</p>
-            <p>Use the <em>Space</em> key to navigate through all slides.</p>
-            <br>
-            <a href="#" class="navigate-down">
-              <img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-            </a>
-          </section>
-          <section>
-            <h2>Basement Level 1</h2>
-            <p>Nested slides are useful for adding additional detail underneath a high level horizontal slide.</p>
-          </section>
-          <section>
-            <h2>Basement Level 2</h2>
-            <p>That's it, time to go back up.</p>
-            <br>
-            <a href="#/2">
-              <img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="transform: rotate(180deg); -webkit-transform: rotate(180deg);">
-            </a>
-          </section>
-        </section>
-
-        <section>
-          <h2>Slides</h2>
-          <p>
-            Not a coder? Not a problem. There's a fully-featured visual editor for authoring these, try it out at <a href="http://slides.com" target="_blank">http://slides.com</a>.
+            <small>Created by <a href="http://github.com/nullaus">Ghislain 'Aus' Lacroix</a> / <a href="http://twitter.com/aus">@aus</a></small>
           </p>
         </section>
 
         <section>
-          <h2>Point of View</h2>
-          <p>
-            Press <strong>ESC</strong> to enter the slide overview.
-          </p>
-          <p>
-            Hold down alt and click on any element to zoom in on it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Alt + click anywhere to zoom back out.
+          <h2>Running tests on device</h2>
+          <p class="fragment">Is my device supported?</p>
+          <p class="fragment">Aries or Flame?</p>
+          <p class="fragment">Yes!</p>
+          <p class="fragment">Do I have a µUSB cable?</p>
+          <p class="fragment">Yes!</p>
+          <p class="fragment">Are you using a USB Hub?</p>
+          <p class="fragment">Is it powered?</p>
+          <p class="fragment">Yes!</p>
+        </section>
+
+        <section>
+          <h2>Preparing your local environment</h2>
+          <p class="fragment">Install node.js v4.0 or greater.</p>
+          <p class="fragment">Ensure you have npm v2.* and only 2.*</p>
+          <p class="fragment">Mac or Linux are the only supported platforms</p>
+          <p class="fragment">Virtual Machines are OK but we recommend VMWare Fusion, Player, or Workstation.</p>
+          <p class="fragment">[Linux] On some distros, you will need to install clang</p>
+        </section>
+
+        <section>
+          <h2>Preparing your device</h2>
+          <p class="fragment">If you care about what's on your device, back it up!</p>
+          <p class="fragment">Full flash w/Engineering Build! (<a href="https://tools.taskcluster.net/index/artifacts/#gecko.v1.mozilla-central.latest.linux.aries-eng/gecko.v1.mozilla-central.latest.linux.aries.opt">Aries Full Images</a>)</p>
+          <p class="fragment">[Optional] Shallow flash of Gecko if testing a custom build</p>
+          <p class="fragment">Push Gaia test profile to device</p>
+        </section>
+
+        <section>
+          <h2>tl;dr</h2>
+          <pre>
+            <code data-trim>
+$ cd ~/Downloads/b2g-distro
+$ ./flash.sh
+$ cd ~/Projects/B2G
+$ ./flash gecko
+$ cd ~/Projects/gaia
+$ make really-clean
+$ make reset-gaia
+$ BUILDAPP=device REPORTER=spec make test-integration
+# Run it again, without building the profile again
+$ BUILDAPP=device REPORTER=spec make test-integration-test
+# Run it again, but just a specific app's tests
+$ APP=clock \
+    BUILDAPP=device \
+    REPORTER=spec \
+    make test-integration-test
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h2>Watch it run!</h2>
+        </section>
+
+        <section>
+          <h2>My device refuses to run tests!</h2>
+          <p class="fragment">Perform a full re-flash of the device from a full image.</p>
+        </section>
+
+        <section>
+          <h2>Enable all the logs!</h2>
+          <p class="fragment">Host logs (this is where your test runs)</p>
+          <p class="fragment">
+            <pre>
+              <code data-trim>
+$ BUILDAPP=device \
+  HOST_LOG=gecko_host.log \
+  VERBOSE=1 \
+    make test-integration
+              </code>
+            </pre>
           </p>
         </section>
 
         <section>
-          <h2>Touch Optimized</h2>
-          <p>
-            Presentations look great on touch devices, like mobile phones and tablets. Simply swipe through your slides.
+          <h2>OMGWTFBBQ?!? It is still not running.</h2>
+          <p class="fragment">Update marionette-js-runner so it doesn't swallow python output.</p>
+          <p class="fragment"><a href="https://github.com/mozilla-b2g/gaia/blob/master/tests/jsmarionette/runner/marionette-js-runner/host/host.js#L15">marionette-js-runner/host/host.js</a></p>
+          <p class="fragment">
+            <pre>
+              <code data-trim>
+// Set me to true!
+var _FORCE_DEBUG = false;
+              </code>
+            </pre>
+          </p>
+          <p class="fragment">
+            <p>After you've done this, you need to update the module so that node will use it.</p>
+            <p><pre>
+              <code data-trim>$ npm run refresh</code>
+            </pre></p>
           </p>
         </section>
 
-        <section data-markdown>
-          <script type="text/template">
-            ## Markdown support
+        <!-- Help, Nothing Runs! (Locally) -->
+        <section>
+          <h2>Troubleshooting local issues</h2>
+          <p class="fragment">Did you read all the steps for setting up your environment?</p>
+          <p class="fragment">No, really, read them again. Don't skip any of the steps!</p>
+          <p class="fragment">Run <code>node -v</code> and <code>npm -v</code> -- are they the correct versions?</p>
+          <p class="fragment">Did the node modules install properly? Try reinstalling them.</p>
+          <p class="fragment"><code>rm -rf node_modules && npm install</code></p>
+          <p class="fragment">Did you see my note about Linux and clang earlier? Did you actually install clang? This will show up as an install error during npm install if it's not installed.</p>
+        </section>
 
-            Write content using inline or external Markdown.
-            Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
-
-            ```
-            <section data-markdown>
-              ## Markdown support
-
-              Write content using inline or external Markdown.
-              Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
-            </section>
-            ```
-          </script>
+        <!-- Help, Nothing Runs! (Remotely) -->
+        <section>
+          <h2>Troubleshooting issues on CI</h2>
+          <p class="fragment">Where is my task definition? <a href="https://github.com/mozilla-b2g/gaia/blob/master/taskgraph.json">taskgraph.json</a></p>
+          <p class="fragment">Where is the task definition for Gij? <a href="https://github.com/mozilla-b2g/gaia/blob/master/tests/taskcluster/tasks/marionette_js_tests.yml">tests/taskcluster/tasks/marionette_js_tests.yml</a></p>
+          <p class="fragment">Wait, but it calls this magic thing in 'ci'? <a href="https://github.com/mozilla-b2g/gaia/tree/master/tests/ci/marionette_js/">tests/ci/marionette_js/</a></p>
         </section>
 
         <section>
-          <section id="fragments">
-            <h2>Fragments</h2>
-            <p>Hit the next arrow...</p>
-            <p class="fragment">... to step through ...</p>
-            <p><span class="fragment">... a</span> <span class="fragment">fragmented</span> <span class="fragment">slide.</span></p>
-
-            <aside class="notes">
-              This slide has fragments which are also stepped through in the notes window.
-            </aside>
-          </section>
-          <section>
-            <h2>Fragment Styles</h2>
-            <p>There's different types of fragments, like:</p>
-            <p class="fragment grow">grow</p>
-            <p class="fragment shrink">shrink</p>
-            <p class="fragment fade-out">fade-out</p>
-            <p class="fragment current-visible">current-visible</p>
-            <p class="fragment highlight-red">highlight-red</p>
-            <p class="fragment highlight-blue">highlight-blue</p>
-          </section>
+         <h2>How do I fix intermittent test failures?</h2>
+         <p class="fragment">Run it again?</p>
+         <p class="fragment">:(</p>
         </section>
 
-        <section id="transitions">
-          <h2>Transition Styles</h2>
-          <p>
-            You can select from different transitions, like: <br>
-            <a href="?transition=none#/transitions">None</a> -
-            <a href="?transition=fade#/transitions">Fade</a> -
-            <a href="?transition=slide#/transitions">Slide</a> -
-            <a href="?transition=convex#/transitions">Convex</a> -
-            <a href="?transition=concave#/transitions">Concave</a> -
-            <a href="?transition=zoom#/transitions">Zoom</a>
+        <section>
+          <h3>Use the docker image we use on taskcluster.</h3>
+          <p class="fragment">
+            First, you'll need <a href="https://www.docker.com/">docker</a> installed.
           </p>
+          <p class="fragment">docker run -ti taskcluster/gaia-taskenv:2.0.4</p>
         </section>
 
-        <section id="themes">
-          <h2>Themes</h2>
-          <p>
-            reveal.js comes with a few themes built in: <br>
-            <!-- Hacks to swap themes after the page has loaded. Not flexible and only intended for the reveal.js demo deck. -->
-            <a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/black.css'); return false;">Black (default)</a> -
-            <a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/white.css'); return false;">White</a> -
-            <a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/league.css'); return false;">League</a> -
-            <a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/sky.css'); return false;">Sky</a> -
-            <a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/beige.css'); return false;">Beige</a> -
-            <a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/simple.css'); return false;">Simple</a> <br>
-            <a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/serif.css'); return false;">Serif</a> -
-            <a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/blood.css'); return false;">Blood</a> -
-            <a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/night.css'); return false;">Night</a> -
-            <a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/moon.css'); return false;">Moon</a> -
-            <a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/solarized.css'); return false;">Solarized</a>
+        <section>
+          <p class="fragment">Edit how we call make test-integration <a href="https://github.com/mozilla-b2g/gaia/blob/master/tests/ci/marionette_js/script">here</a>
+          </p>
+          <p class="fragment">
+            <pre>
+              <code data-trim>
+# Maybe we're debugging a single test file
+TEST_FILES=/home/worker/git_checkout/path/to/test/file.js \
+    make test-integration
+# Or a specific app only.
+APP=myapp make test-integration
+              </code>
+            </pre>
           </p>
         </section>
 
         <section>
-          <section data-background="#dddddd">
-            <h2>Slide Backgrounds</h2>
-            <p>
-              Set <code>data-background="#dddddd"</code> on a slide to change the background color. All CSS color formats are supported.
-            </p>
-            <a href="#" class="navigate-down">
-              <img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-            </a>
-          </section>
-          <section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png">
-            <h2>Image Backgrounds</h2>
-            <pre><code class="hljs">&lt;section data-background="image.png"&gt;</code></pre>
-          </section>
-          <section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png" data-background-repeat="repeat" data-background-size="100px">
-            <h2>Tiled Backgrounds</h2>
-            <pre><code class="hljs" style="word-wrap: break-word;">&lt;section data-background="image.png" data-background-repeat="repeat" data-background-size="100px"&gt;</code></pre>
-          </section>
-          <section data-background-video="https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.mp4,https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.webm" data-background-color="#000000">
-            <div style="background-color: rgba(0, 0, 0, 0.9); color: #fff; padding: 20px;">
-              <h2>Video Backgrounds</h2>
-              <pre><code class="hljs" style="word-wrap: break-word;">&lt;section data-background-video="video.mp4,video.webm"&gt;</code></pre>
-            </div>
-          </section>
-          <section data-background="http://i.giphy.com/90F8aUepslB84.gif">
-            <h2>... and GIFs!</h2>
-          </section>
-        </section>
-
-        <section data-transition="slide" data-background="#4d7e65" data-background-transition="zoom">
-          <h2>Background Transitions</h2>
-          <p>
-            Different background transitions are available via the backgroundTransition option. This one's called "zoom".
+          <p class="fragment">
+            You can even replace that entire script! I would <b>absolutely</b> recommend doing this.
           </p>
-          <pre><code class="hljs">Reveal.configure({ backgroundTransition: 'zoom' })</code></pre>
-        </section>
+          <p class="fragment">
+            <pre>
+              <code data-trim>
+var spawnSync = require('child_process').spawnSync;
+var env = {
+  TEST_FILES: "/home/worker/git_checkout/path-to-test-file.js"
+};
+var runsToPerform = 30;
+var status = 0;
 
-        <section data-transition="slide" data-background="#b5533c" data-background-transition="zoom">
-          <h2>Background Transitions</h2>
-          <p>
-            You can override background transitions per-slide.
-          </p>
-          <pre><code class="hljs" style="word-wrap: break-word;">&lt;section data-background-transition="zoom"&gt;</code></pre>
-        </section>
-
-        <section>
-          <h2>Pretty Code</h2>
-          <pre><code class="hljs" data-trim contenteditable>
-function linkify( selector ) {
-  if( supports3DTransforms ) {
-
-    var nodes = document.querySelectorAll( selector );
-
-    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-      var node = nodes[i];
-
-      if( !node.className ) {
-        node.className += ' roll';
-      }
-    }
+for(var i = 0; i < runsToPerform; i++) {
+  var childProc = spawnSync('make',
+                            ['test-integration'],
+                            { maxBuffer: 4096 * 1024,
+                              env: env });
+  if (status.status !== 0) {
+    console.info(childProc.stdout);
+    console.error(childProc.stderr);
+    process.exit(99);
   }
 }
-          </code></pre>
-          <p>Code syntax highlighting courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
-        </section>
-
-        <section>
-          <h2>Marvelous List</h2>
-          <ul>
-            <li>No order here</li>
-            <li>Or here</li>
-            <li>Or here</li>
-            <li>Or here</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Fantastic Ordered List</h2>
-          <ol>
-            <li>One is smaller than...</li>
-            <li>Two is smaller than...</li>
-            <li>Three!</li>
-          </ol>
-        </section>
-
-        <section>
-          <h2>Tabular Tables</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Value</th>
-                <th>Quantity</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Apples</td>
-                <td>$1</td>
-                <td>7</td>
-              </tr>
-              <tr>
-                <td>Lemonade</td>
-                <td>$2</td>
-                <td>18</td>
-              </tr>
-              <tr>
-                <td>Bread</td>
-                <td>$3</td>
-                <td>2</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section>
-          <h2>Clever Quotes</h2>
-          <p>
-            These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-            &ldquo;The nice thing about standards is that there are so many to choose from&rdquo;</q> and block:
-          </p>
-          <blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-            &ldquo;For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
-            reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.&rdquo;
-          </blockquote>
-        </section>
-
-        <section>
-          <h2>Intergalactic Interconnections</h2>
-          <p>
-            You can link between slides internally,
-            <a href="#/2/3">like this</a>.
+              </code>
+            </pre>
           </p>
         </section>
-
-        <section>
-          <h2>Speaker View</h2>
-          <p>There's a <a href="https://github.com/hakimel/reveal.js#speaker-notes">speaker view</a>. It includes a timer, preview of the upcoming slide as well as your speaker notes.</p>
-          <p>Press the <em>S</em> key to try it out.</p>
-
-          <aside class="notes">
-            Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
-          </aside>
-        </section>
-
-        <section>
-          <h2>Export to PDF</h2>
-          <p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, here's an example:</p>
-          <iframe src="https://www.slideshare.net/slideshow/embed_code/42840540" width="445" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:3px solid #666; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
-        </section>
-
-        <section>
-          <h2>Global State</h2>
-          <p>
-            Set <code>data-state="something"</code> on a slide and <code>"something"</code>
-            will be added as a class to the document element when the slide is open. This lets you
-            apply broader style changes, like switching the page background.
-          </p>
-        </section>
-
-        <section data-state="customevent">
-          <h2>State Events</h2>
-          <p>
-            Additionally custom events can be triggered on a per slide basis by binding to the <code>data-state</code> name.
-          </p>
-          <pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
-Reveal.addEventListener( 'customevent', function() {
-  console.log( '"customevent" has fired' );
-} );
-          </code></pre>
-        </section>
-
-        <section>
-          <h2>Take a Moment</h2>
-          <p>
-            Press B or . on your keyboard to pause the presentation. This is helpful when you're on stage and want to take distracting slides off the screen.
-          </p>
-        </section>
-
-        <section>
-          <h2>Much more</h2>
-          <ul>
-            <li>Right-to-left support</li>
-            <li><a href="https://github.com/hakimel/reveal.js#api">Extensive JavaScript API</a></li>
-            <li><a href="https://github.com/hakimel/reveal.js#auto-sliding">Auto-progression</a></li>
-            <li><a href="https://github.com/hakimel/reveal.js#parallax-background">Parallax backgrounds</a></li>
-            <li><a href="https://github.com/hakimel/reveal.js#keyboard-bindings">Custom keyboard bindings</a></li>
-          </ul>
-        </section>
-
-        <section style="text-align: left;">
-          <h1>THE END</h1>
-          <p>
-            - <a href="http://slides.com">Try the online editor</a> <br>
-            - <a href="https://github.com/hakimel/reveal.js">Source code &amp; documentation</a>
-          </p>
-        </section>
-
       </div>
-
     </div>
 
     <script src="lib/js/head.min.js"></script>
